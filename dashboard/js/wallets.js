@@ -482,8 +482,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const nextBtn = redemptionModal?.querySelector('.next-btn');
     const prevBtn = redemptionModal?.querySelector('.prev-btn');
     const withdrawBtn = redemptionModal?.querySelector('.withdraw-btn');
-    const redeemUsdBalanceEl = document.getElementById('redeem-usd-balance');
-    const redeemEurBalanceEl = document.getElementById('redeem-eur-balance');
+    const redeemUsdtBalanceEl = document.getElementById('redeem-usdt-balance');
+    const redeemUsdcBalanceEl = document.getElementById('redeem-usdc-balance');
+    const redeemEurcBalanceEl = document.getElementById('redeem-eurc-balance');
     const withdrawalAmountInput = document.getElementById('withdrawal-amount');
     const availableBalanceDisplay = document.getElementById('available-balance-display');
     const amountCurrencySymbol = document.getElementById('amount-currency-symbol');
@@ -491,8 +492,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const withdrawalAddressContainer = document.getElementById('withdrawal-address-container');
     const withdrawalAddressInput = document.getElementById('withdrawal-address');
     let currentStep = 1;
+    let selectedCoin = 'USDT';
     let selectedCurrency = 'USD';
     let selectedMethod = 'solana';
+
+    function updateCoinMethodAvailability() {
+        const baseMethod = document.getElementById('withdraw-base');
+        const baseMethodContainer = baseMethod?.closest('.withdrawal-method');
+        if (!baseMethod) return;
+
+        baseMethod.disabled = selectedCoin === 'USDT';
+        baseMethodContainer?.classList.toggle('disabled', baseMethod.disabled);
+        if (baseMethod.disabled && baseMethod.checked) {
+            document.getElementById('withdraw-solana').checked = true;
+            selectedMethod = 'solana';
+        }
+    }
 
     if (withdrawalAddressInput) {
         withdrawalAddressInput.addEventListener('input', function() {
@@ -543,13 +558,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (redeemBalanceBtn && redemptionModal) {
         // Update balance display in the redemption modal
         function updateRedemptionBalances() {
-            if (redeemUsdBalanceEl) redeemUsdBalanceEl.textContent = balanceData.USD;
-            if (redeemEurBalanceEl) redeemEurBalanceEl.textContent = balanceData.EUR;
+            if (redeemUsdtBalanceEl) redeemUsdtBalanceEl.textContent = balanceData.USD;
+            if (redeemUsdcBalanceEl) redeemUsdcBalanceEl.textContent = balanceData.USD;
+            if (redeemEurcBalanceEl) redeemEurcBalanceEl.textContent = balanceData.EUR;
         }
         
         // Open modal
         redeemBalanceBtn.addEventListener('click', () => {
             updateRedemptionBalances();
+            updateCoinMethodAvailability();
             redemptionModal.classList.add('show');
             document.body.style.overflow = 'hidden'; // Prevent scrolling
             
@@ -623,10 +640,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 if (currentStep === 1) {
-                    // Get selected currency
-                    const currencyRadio = document.querySelector('input[name="redeem-currency"]:checked');
-                    if (currencyRadio) {
-                        selectedCurrency = currencyRadio.value;
+                    // Get selected coin and its balance denomination
+                    const coinRadio = document.querySelector('input[name="redeem-coin"]:checked');
+                    if (coinRadio) {
+                        selectedCoin = coinRadio.value;
+                        selectedCurrency = selectedCoin === 'EURC' ? 'EUR' : 'USD';
                         updateAvailableBalance();
                     }
                 } else if (currentStep === 2) {
@@ -667,10 +685,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         
-        // Currency selection
-        document.querySelectorAll('input[name="redeem-currency"]').forEach(radio => {
+        // Coin selection
+        document.querySelectorAll('input[name="redeem-coin"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
-                selectedCurrency = e.target.value;
+                selectedCoin = e.target.value;
+                selectedCurrency = selectedCoin === 'EURC' ? 'EUR' : 'USD';
+                updateCoinMethodAvailability();
                 updateAvailableBalance();
             });
         });
@@ -811,6 +831,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         currency: selectedCurrency,
                         paymentDetails: {
                             method: selectedMethod,
+                            coin: selectedCoin,
                             destination: address
                         }
                     };

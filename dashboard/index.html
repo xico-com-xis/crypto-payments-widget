@@ -1060,33 +1060,46 @@
                 </div>
                 
                 <div class="redemption-content">
-                    <!-- Step 1: Choose Currency -->
+                    <!-- Step 1: Choose Coin -->
                     <div class="redeem-step-panel active" data-step="1">
-                        <h4>Step 1: Choose Currency</h4>
-                        <p>Select the currency you want to withdraw:</p>
+                        <h4>Step 1: Choose Coin</h4>
+                        <p>Select the coin you want to receive:</p>
                         
                         <div class="redeem-currency-options">
                             <div class="redeem-currency-option">
-                                <input type="radio" id="redeem-usd" name="redeem-currency" value="USD" checked>
-                                <label for="redeem-usd">
+                                <input type="radio" id="redeem-usdt" name="redeem-coin" value="USDT" checked>
+                                <label for="redeem-usdt">
                                     <div class="redeem-currency-option-content">
                                         <div class="redeem-currency-symbol">$</div>
                                         <div class="redeem-currency-details">
-                                            <div class="redeem-currency-name">USD</div>
-                                            <div class="redeem-currency-balance">Balance: $<span id="redeem-usd-balance">0.00</span></div>
+                                            <div class="redeem-currency-name">USDT</div>
+                                            <div class="redeem-currency-balance">Available USD balance: $<span id="redeem-usdt-balance">0.00</span></div>
                                         </div>
                                     </div>
                                 </label>
                             </div>
                             
                             <div class="redeem-currency-option">
-                                <input type="radio" id="redeem-eur" name="redeem-currency" value="EUR">
-                                <label for="redeem-eur">
+                                <input type="radio" id="redeem-usdc" name="redeem-coin" value="USDC">
+                                <label for="redeem-usdc">
+                                    <div class="redeem-currency-option-content">
+                                        <div class="redeem-currency-symbol">$</div>
+                                        <div class="redeem-currency-details">
+                                            <div class="redeem-currency-name">USDC</div>
+                                            <div class="redeem-currency-balance">Available USD balance: $<span id="redeem-usdc-balance">0.00</span></div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="redeem-currency-option">
+                                <input type="radio" id="redeem-eurc" name="redeem-coin" value="EURC">
+                                <label for="redeem-eurc">
                                     <div class="redeem-currency-option-content">
                                         <div class="redeem-currency-symbol">€</div>
                                         <div class="redeem-currency-details">
-                                            <div class="redeem-currency-name">EUR</div>
-                                            <div class="redeem-currency-balance">Balance: €<span id="redeem-eur-balance">0.00</span></div>
+                                            <div class="redeem-currency-name">EUR (EURC)</div>
+                                            <div class="redeem-currency-balance">Available EUR balance: €<span id="redeem-eurc-balance">0.00</span></div>
                                         </div>
                                     </div>
                                 </label>
@@ -1120,7 +1133,7 @@
                                         <img src="../assets/icons/base-logo.png" alt="Base" class="chain-logo">
                                         <div class="withdrawal-details">
                                             <div class="method-name">Base</div>
-                                            <div class="method-info">Withdraw to Base blockchain</div>
+                                            <div class="method-info">Withdraw USDC or EURC to Base blockchain</div>
                                         </div>
                                     </div>
                                 </label>
